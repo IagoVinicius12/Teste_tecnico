@@ -1,0 +1,35 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - MongoDBSettings__ConnectionString=mongodb://admin:admin123@mongo:27017/TesteTecnico?authSource=admin&retryWrites=true&w=majority
+    volumes:
+      - ./:/src
+      - ~/.nuget:/root/.nuget
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh -u admin -p admin123 --quiet || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
