@@ -14,25 +14,6 @@ public class MotoService : IMotoService
     }
     public async Task<MotoResponse> CreateMotoAsync(CreateMotoDTO motoDTO)
     {
-        var moto = new Moto
-        {
-            Identifier = motoDTO.identificador,
-            Year = motoDTO.ano,
-            Plate = motoDTO.placa,
-            Model = motoDTO.modelo,
-        };
-        await moto.SaveAsync(); 
-        return new MotoResponse
-        {
-            Id = moto.ID,
-            Identifier = moto.Identifier,
-            Plate = moto.Plate,
-            Model = moto.Model,
-            Year = moto.Year,
-        };
-    }
-    public async Task<MotoResponse?> GetMotoByIdAsync(string id)
-    {
         try
         {
             var moto = new Moto
@@ -57,6 +38,7 @@ public class MotoService : IMotoService
             throw new Exception("Failed to create a new Moto " + ex.Message);
         }
     }
+
     public async Task<MotoResponse?> GetMotoByIdAsync(string id)
     {
         try
@@ -64,22 +46,25 @@ public class MotoService : IMotoService
             var moto = await DB.Find<Moto>()
                            .Match(m => m.Identifier == id)
                            .ExecuteFirstAsync();
-            return moto == null
-                ? null
-                : new MotoResponse
-                {
-                    Id = moto.ID,
-                    Identifier = moto.Identifier,
-                    Plate = moto.Plate,
-                    Model = moto.Model,
-                    Year = moto.Year,
-                };
+            if (moto == null)
+            {
+                return null;
+            }
+            return new MotoResponse
+            {
+                Id = moto.ID,
+                Identifier = moto.Identifier,
+                Plate = moto.Plate,
+                Model = moto.Model,
+                Year = moto.Year,
+            };
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            throw new Exception("Moto not found"+ex.Message);
+            throw new Exception("Moto Id not found");
         }
     }
+
     public async Task<List<MotoResponse>> ListAllMotosAsync()
     {
         var motos = await DB.Find<Moto>().ExecuteAsync();
