@@ -21,10 +21,10 @@ public class MotoService : IMotoService
             Plate = motoDTO.placa,
             Model = motoDTO.modelo,
         };
-        await moto.SaveAsync(); // Salva usando MongoDB.Entities
+        await moto.SaveAsync(); 
         return new MotoResponse
         {
-            Id = moto.ID, // propriedade do Entity
+            Id = moto.ID,
             Identifier = moto.Identifier,
             Plate = moto.Plate,
             Model = moto.Model,
@@ -33,26 +33,59 @@ public class MotoService : IMotoService
     }
     public async Task<MotoResponse?> GetMotoByIdAsync(string id)
     {
-        var moto = await DB.Find<Moto>()
-                           .Match(m => m.Identifier == id)
-                           .ExecuteFirstAsync();
-        return moto == null
-            ? null
-            : new MotoResponse
+        try
+        {
+            var moto = new Moto
             {
-                Id = moto.ID, // propriedade do Entity
+                Identifier = motoDTO.identificador,
+                Year = motoDTO.ano,
+                Plate = motoDTO.placa,
+                Model = motoDTO.modelo,
+            };
+            await moto.SaveAsync();
+            return new MotoResponse
+            {
+                Id = moto.ID,
                 Identifier = moto.Identifier,
                 Plate = moto.Plate,
                 Model = moto.Model,
                 Year = moto.Year,
             };
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Failed to create a new Moto " + ex.Message);
+        }
+    }
+    public async Task<MotoResponse?> GetMotoByIdAsync(string id)
+    {
+        try
+        {
+            var moto = await DB.Find<Moto>()
+                           .Match(m => m.Identifier == id)
+                           .ExecuteFirstAsync();
+            return moto == null
+                ? null
+                : new MotoResponse
+                {
+                    Id = moto.ID,
+                    Identifier = moto.Identifier,
+                    Plate = moto.Plate,
+                    Model = moto.Model,
+                    Year = moto.Year,
+                };
+        }
+        catch(Exception ex)
+        {
+            throw new Exception("Moto not found"+ex.Message);
+        }
     }
     public async Task<List<MotoResponse>> ListAllMotosAsync()
     {
         var motos = await DB.Find<Moto>().ExecuteAsync();
         return motos.Select(m => new MotoResponse
         {
-            Id = m.ID, // propriedade do Entity
+            Id = m.ID, 
             Identifier = m.Identifier,
             Plate = m.Plate,
             Model = m.Model,
@@ -61,23 +94,29 @@ public class MotoService : IMotoService
     }
     public async Task<MotoResponse?> UpdateMotoPlate(UpdateMotoPlateDTO umotoDTO)
     {
-        var motoToUpdate = await DB.Find<Moto>()
-                                   .Match(m => m.Identifier == umotoDTO.identificador)
-                                   .ExecuteFirstAsync();
-        if (motoToUpdate == null)
+        try
         {
-            return null; // Moto não encontrada
+            var motoToUpdate = await DB.Find<Moto>()
+                               .Match(m => m.Identifier == umotoDTO.identificador)
+                               .ExecuteFirstAsync();
+            if (motoToUpdate == null)
+            {
+                throw new Exception("Moto not found");
+            }
+            motoToUpdate.Plate = umotoDTO.placa;
+            await motoToUpdate.SaveAsync();
+            return new MotoResponse
+            {
+                Id = motoToUpdate.ID,
+                Identifier = motoToUpdate.Identifier,
+                Plate = motoToUpdate.Plate,
+                Model = motoToUpdate.Model,
+                Year = motoToUpdate.Year,
+            };
         }
-        // Atualiza a placa da moto
-        motoToUpdate.Plate = umotoDTO.placa;
-        await motoToUpdate.SaveAsync(); // Salva as alterações
-        return new MotoResponse
+        catch(Exception ex)
         {
-            Id = motoToUpdate.ID,
-            Identifier = motoToUpdate.Identifier,
-            Plate = motoToUpdate.Plate,
-            Model = motoToUpdate.Model,
-            Year = motoToUpdate.Year,
-        };
+            throw new Exception("Erro ao atualizar a moto!!");
+        }
     }
 }
