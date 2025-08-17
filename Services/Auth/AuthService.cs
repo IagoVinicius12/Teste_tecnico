@@ -7,10 +7,10 @@ using MongoDB.Entities;
 using System.Threading.Tasks;
 using Services.Auth.Interface.IAuthService;
 using Models.Auth.Requests.LoginDTO;
-using Models.EntregadorModel;
+using Models.DeliveryPersonModel;
 using Models.AdminModel;
 using Services.Admin.Interface.IAdminService;
-using Services.Entregador.Interface.IEntregadorService;
+using Services.DeliveryPerson.Interface.IDeliveryPersonService;
 
 
 
@@ -37,7 +37,7 @@ public class AuthService:IAuthService
     
     public async Task<string> GenerateTokenAsync(LoginDTO loginDTO)
     {
-        // metodo para gerar o token JWT a partir do payload sendo esse o ID gerado pelo MongoDB, o email e o role do usuário(Admin ou Entregador)
+        // metodo para gerar o token JWT a partir do payload sendo esse o ID gerado pelo MongoDB, o email e o role do usuário(Admin ou DeliveryPerson)
         var jwtSecret = _config["Jwt:Secret"] ??
             throw new ArgumentNullException("Jwt:Secret não configurado");
 
@@ -57,7 +57,7 @@ public class AuthService:IAuthService
         }
         else
         {
-            var entregador = await DB.Find<Entregador>()
+            var entregador = await DB.Find<DeliveryPerson>()
                 .Match(e => e.Email == loginDTO.Email)
                 .ExecuteFirstAsync();
             if (entregador != null)

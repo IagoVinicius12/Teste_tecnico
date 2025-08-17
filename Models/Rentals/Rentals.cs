@@ -1,15 +1,15 @@
 using System;
 using MongoDB.Entities;
 
-namespace Models.LocacoesModel;
+namespace Models.RentalsModel;
 
 
-[Collection("Locacao")]
-public class Locacao : Entity
+[Collection("Rental")]
+public class Rental : Entity
 {
     public string Identifier { get; set; } = null!;
 
-    public string EntregadorId { get; set; } = null!;
+    public string DeliveryPersonId { get; set; } = null!;
 
     public string MotoId { get; set; } = null!;
 
@@ -27,12 +27,12 @@ public class Locacao : Entity
 
     public float TotalPrice { get; set; }
 
-    public Locacao() { }
+    public Rental() { }
 
-    public Locacao(string identifier,string entregadorId, string motoId, DateTime startDate, DateTime endDate, DateTime devolutionPrevisionDate, DateTime devolutionDate, int planType, float dailyPrice)
+    public Rental(string identifier,string deliveryPersonId, string motoId, DateTime startDate, DateTime endDate, DateTime devolutionPrevisionDate, DateTime devolutionDate, int planType, float dailyPrice)
     {
         Identifier = identifier;
-        EntregadorId = entregadorId;
+        DeliveryPersonId = deliveryPersonId;
         MotoId = motoId;
         StartDate = startDate;
         EndDate = endDate;

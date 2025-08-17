@@ -1,12 +1,12 @@
 ﻿using MongoDB.Driver;
 using MongoDB.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Services.Entregador.Interface.IEntregadorService;
-using Models.EntregadorModel;
+using Services.DeliveryPerson.Interface.IDeliveryPersonService;
+using Models.DeliveryPersonModel;
 using Models.MotoModel;
 using Services.Moto.Interfaces.IMotoService;
-using Models.LocacoesModel;
-using Services.Locacoes.Interface.ILocacoesInterface;
+using Models.RentalsModel;
+using Services.Rentals.Interface.IRentalsService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Services.Auth.Interface.IAuthService;
@@ -26,7 +26,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Sua API", Version = "v1" });
-
+    c.EnableAnnotations();
     // Configuração do Bearer Token no Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -74,17 +74,17 @@ await DB.InitAsync(
 );
 
 // 4. Índices
-await DB.Index<Entregador>()
+await DB.Index<DeliveryPerson>()
     .Key(e => e.Identifier, KeyType.Ascending)
     .Option(o => o.Unique = true)
     .CreateAsync();
 
-await DB.Index<Entregador>()
+await DB.Index<DeliveryPerson>()
     .Key(e => e.Cnpj, KeyType.Ascending)
     .Option(o => o.Unique = true)
     .CreateAsync();
 
-await DB.Index<Entregador>()
+await DB.Index<DeliveryPerson>()
     .Key(e => e.CnhNumber, KeyType.Ascending)
     .Option(o => o.Unique = true)
     .CreateAsync();
@@ -100,9 +100,9 @@ await DB.Index<Moto>()
     .CreateAsync();
 
 // 5. Registro dos serviços
-builder.Services.AddScoped<IEntregadorService, EntregadorService>();
+builder.Services.AddScoped<IDeliveryPersonService, DeliveryPersonService>();
 builder.Services.AddScoped<IMotoService, MotoService>();
-builder.Services.AddScoped<ILocacoesService, LocacoesService>();
+builder.Services.AddScoped<IRentalsService, RentalsService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddSingleton<KafkaProducerService>();
@@ -133,7 +133,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(key),
 
-            // RoleClaimType padrão é ClaimTypes.Role, já que você está usando:
+            // RoleClaimType padrão é ClaimTypes.Role
             // new Claim(ClaimTypes.Role, "Admin")
             RoleClaimType = ClaimTypes.Role
         };
@@ -143,6 +143,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Admin", policy =>
         policy.RequireRole("Admin"));
+    options.AddPolicy("DeliveryPerson", policy =>
+        policy.RequireRole("DeliveryPerson"));
 });
 
 var app = builder.Build();
@@ -157,8 +159,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowAll");
-
-// **Ordem correta: primeiro autenticação, depois autorização**
+//primeiro autenticação, depois autorização
 app.UseAuthentication();
 app.UseAuthorization();
 

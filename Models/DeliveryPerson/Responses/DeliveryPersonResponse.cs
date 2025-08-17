@@ -1,5 +1,5 @@
-namespace Models.Entregadores.Responses.EntregadorResponse;
-public class EntregadorResponse
+namespace Models.DeliveryPerson.Responses.DeliveryPersonResponse;
+public class DeliveryPersonResponse
 {
 	public string id { get; set; } =string.Empty;
     public string identifier { get; set; } = string.Empty;
@@ -11,9 +11,9 @@ public class EntregadorResponse
     public DateTime birthdate { get; set; } = DateTime.UtcNow;  
     public string cnhPath { get; set; } = string.Empty;
 
-    public EntregadorResponse() { }
+    public DeliveryPersonResponse() { }
 
-    public EntregadorResponse(string id, string identifier,string email,string name, string cnpj, string cnh,string cnhtype, DateTime birthdate, string cnhPath)
+    public DeliveryPersonResponse(string id, string identifier,string email,string name, string cnpj, string cnh,string cnhtype, DateTime birthdate, string cnhPath)
     {
         this.id = id;
         this.identifier = identifier;

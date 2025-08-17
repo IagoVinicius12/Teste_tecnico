@@ -7,7 +7,7 @@ using Models.Admin.Requests.CreateAdminDTO;
 using Models.Admin.Responses.AdminResponse;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;

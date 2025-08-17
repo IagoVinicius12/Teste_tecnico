@@ -12,16 +12,16 @@ public class MotoResponse
 
     public string Plate { get; set; } = string.Empty;
 
-    public bool IsLocated { get; set; } = false;
+    public bool IsRented { get; set; } = false;
 
     public MotoResponse() { }
-    public MotoResponse(string id, string identifier, int year, string model, string plate, bool isLocated)
+    public MotoResponse(string id, string identifier, int year, string model, string plate, bool isRented)
     {
         Id = id;
         Identifier = identifier;
         Year = year;
         Model = model;
         Plate = plate;
-        IsLocated = isLocated;
+        IsRented = isRented;
     }
 }

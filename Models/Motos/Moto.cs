@@ -18,8 +18,8 @@ public class Moto : Entity
     [Field("plate")]
     public string Plate { get; set; } = string.Empty;
 
-    [Field("islocated")]
-    public bool IsLocated { get; set; } = false;
+    [Field("isRented")]
+    public bool IsRented { get; set; } = false;
 
     public Moto() { }
 

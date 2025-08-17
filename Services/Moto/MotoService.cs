@@ -5,17 +5,17 @@ using Models.Motos.Requests.CreateMotoDTO;
 using Models.Motos.Responses;
 using Models.Motos.Requests.UpdateMotoPlateDTO;
 using Models.Motos.Responses.MotoResponse;
-using Models.LocacoesModel;
-using Services.Locacoes.Interface.ILocacoesInterface;
+using Models.RentalsModel;
+using Services.Rentals.Interface.IRentalsService;
 using Services.Kafka.Producer;
 
 public class MotoService : IMotoService
 {
-    private readonly ILocacoesService _locacoesService;
+    private readonly IRentalsService _rentalService;
     private readonly KafkaProducerService _kafkaProducerService;
-    public MotoService(ILocacoesService locacoesService, KafkaProducerService kafkaProducerService)
+    public MotoService(IRentalsService rentalService, KafkaProducerService kafkaProducerService)
     {
-        _locacoesService = locacoesService;
+        _rentalService = rentalService;
         _kafkaProducerService = kafkaProducerService;
     }
     public async Task<MotoResponse> CreateMotoAsync(CreateMotoDTO motoDTO)
@@ -25,10 +25,10 @@ public class MotoService : IMotoService
         {
             var moto = new Moto
             {
-                Identifier = motoDTO.identificador,
-                Year = motoDTO.ano,
-                Plate = motoDTO.placa,
-                Model = motoDTO.modelo,
+                Identifier = motoDTO.identifier,
+                Year = motoDTO.year,
+                Plate = motoDTO.plate,
+                Model = motoDTO.model,
             };
             await moto.SaveAsync();
             await _kafkaProducerService.PublishMotoCreatedAsync(moto);
@@ -92,13 +92,13 @@ public class MotoService : IMotoService
         try
         {
             var motoToUpdate = await DB.Find<Moto>()
-                               .Match(m => m.Identifier == umotoDTO.identificador)
+                               .Match(m => m.Identifier == umotoDTO.identifier)
                                .ExecuteFirstAsync();
             if (motoToUpdate == null)
             {
                 throw new Exception("Moto not found");
             }
-            motoToUpdate.Plate = umotoDTO.placa;
+            motoToUpdate.Plate = umotoDTO.plate;
             await motoToUpdate.SaveAsync();
             return new MotoResponse
             {
@@ -111,7 +111,7 @@ public class MotoService : IMotoService
         }
         catch(Exception ex)
         {
-            throw new Exception($"Failed to update Moto with plate {umotoDTO.placa}: " + ex.Message);
+            throw new Exception($"Failed to update Moto with plate {umotoDTO.plate}: " + ex.Message);
         }
     }
 
@@ -128,12 +128,12 @@ public class MotoService : IMotoService
                 throw new Exception("Moto not found");
             }
 
-            var locacao = await DB.Find<Locacao>()
+            var rental = await DB.Find<Rental>()
                 .Match(l => l.MotoId == id)
                 .ExecuteFirstAsync();
-            if (locacao != null)
+            if (rental != null)
             {
-                throw new Exception("Cannot delete Moto, this id has a location history");
+                throw new Exception("Cannot delete Moto, this id has a rent history");
             }
             await moto.DeleteAsync();
 

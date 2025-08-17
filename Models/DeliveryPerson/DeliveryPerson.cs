@@ -1,9 +1,9 @@
 ﻿using MongoDB.Entities;
 
-namespace Models.EntregadorModel;
+namespace Models.DeliveryPersonModel;
 
-[Collection("Entregador")]
-public class Entregador : Entity
+[Collection("DeliveryPerson")]
+public class DeliveryPerson : Entity
 {
     [Field("identifier")]
     public string Identifier { get; set; } = string.Empty;
@@ -33,11 +33,11 @@ public class Entregador : Entity
     public string CnhImagepath { get; set; } = string.Empty;// so salva o caminho do base64 da imagem
 
     [Field("role")]
-    public string Role { get; set; } = "Entregador";
+    public string Role { get; set; } = "DeliveryPerson";
 
-    public Entregador() { }
+    public DeliveryPerson() { }
 
-    public Entregador(string identifier,string email, string password, string name, string cnpj, DateTime birthdate, string cnhNumber, string cnhType, string cnhImage)
+    public DeliveryPerson(string identifier,string email, string password, string name, string cnpj, DateTime birthdate, string cnhNumber, string cnhType, string cnhImage)
     {
         Identifier = identifier;
         Email = email;
