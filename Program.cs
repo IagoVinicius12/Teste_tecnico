@@ -16,6 +16,7 @@ using System.Security.Claims;
 using Microsoft.OpenApi.Models;
 using Services.Kafka.Consumer;
 using Services.Kafka.Producer;
+using Models.AdminModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,7 +74,7 @@ await DB.InitAsync(
     )
 );
 
-// 4. Índices
+// 4. Índices- para deixar alguns parâmetros unicos
 await DB.Index<DeliveryPerson>()
     .Key(e => e.Identifier, KeyType.Ascending)
     .Option(o => o.Unique = true)
@@ -98,7 +99,10 @@ await DB.Index<Moto>()
     .Key(m => m.Plate, KeyType.Ascending)
     .Option(o => o.Unique = true)
     .CreateAsync();
-
+await DB.Index<Admin>()
+    .Key(a => a.Email, KeyType.Ascending)
+    .Option(o => o.Unique = true)
+    .CreateAsync();
 // 5. Registro dos serviços
 builder.Services.AddScoped<IDeliveryPersonService, DeliveryPersonService>();
 builder.Services.AddScoped<IMotoService, MotoService>();
@@ -159,8 +163,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseCors("AllowAll");
-//primeiro autenticação, depois autorização
-app.UseAuthentication();
+app.UseAuthentication();//primeiro autenticação, depois autorização
 app.UseAuthorization();
 
 app.Use(async (context, next) =>

@@ -22,29 +22,29 @@ No linux: docker-compose up --build -d
 ## Endpoints da API
 
 ### Módulo de Motos
-| Método | Rota                     | Autenticação | Descrição                                  |
-|--------|--------------------------|--------------|--------------------------------------------|
-| POST   | `/motos/create`          | Admin        | Cadastra uma nova moto na base de dados    |
-| GET    | `/motos/get/{id}`        | Público      | Retorna os dados de uma moto por ID        |
-| GET    | `/motos/list`            | Público      | Lista todas as motos cadastradas           |
-| PUT    | `/motos/update/{plate}`  | Admin        | Atualiza os dados de uma moto pela placa   |
-| DELETE | `/motos/delete/{id}`     | Admin        | Remove uma moto do sistema por ID          |
-| GET    | `/getmotobyplate/{plate}`| Admin        | Busca uma moto específica pela placa       |
+| Método | Rota                     | Autenticação | Descrição                                      |
+|--------|--------------------------|--------------|------------------------------------------------|
+| POST   | `/motos/create`          | Admin        | Cadastra uma nova moto na base de dados        |
+| GET    | `/motos/get/{id}`        | Público      | Retorna os dados de uma moto por Identificador |
+| GET    | `/motos/list`            | Público      | Lista todas as motos cadastradas               |
+| PUT    | `/motos/update/{plate}`  | Admin        | Atualiza os dados de uma moto pela placa       |
+| DELETE | `/motos/delete/{id}`     | Admin        | Remove uma moto do sistema por Identificação   |
+| GET    | `/getmotobyplate/{plate}`| Admin        | Busca uma moto específica pela placa           |
 
 ### 📦 Módulo de Locações
 | Método | Rota                       | Autenticação       | Descrição                                |
 |--------|----------------------------|--------------------|------------------------------------------|
 | POST   | `/rentals/create`          | Admin/Entregador   | Cria um novo contrato de locação         |
-| GET    | `/rentals/get_locacao/{id}`| Público            | Consulta uma locação por ID              |
+| GET    | `/rentals/get_locacao/{id}`| Público            | Consulta uma locação por Identificação   |
 | PUT    | `/rentals/{id}/update`     | Admin/Entregador   | Atualiza os dados de uma locação         |
 
 ### Módulo de Entregadores
-| Método | Rota                             | Autenticação | Descrição                                      |
-|--------|----------------------------------|--------------|------------------------------------------------|
-| POST   | `/deliveryperson/create`         | -            | Cadastra um novo entregador                    |
-| GET    | `/deliveryperson/list`           | -            | Lista todos os entregadores cadastrados        |
-| GET    | `/deliveryperson/get/{id}`       | -            | Busca um entregador específico por ID          |
-| POST   | `/deliveryperson/upload_cnh/{id}`| -            | Upload da CNH (aceita Base64 PNG/BMP)          |
+| Método | Rota                             | Autenticação | Descrição                                       |
+|--------|----------------------------------|--------------|-------------------------------------------------|
+| POST   | `/deliveryperson/create`         | -            | Cadastra um novo entregador                     |
+| GET    | `/deliveryperson/list`           | -            | Lista todos os entregadores cadastrados         |
+| GET    | `/deliveryperson/get/{id}`       | -            | Busca um entregador específico por Identificação|
+| POST   | `/deliveryperson/upload_cnh/{id}`| -            | Upload da CNH (aceita Base64 PNG/BMP)           |
 
 ### Módulo Administrativo
 | Método | Rota                          | Autenticação | Descrição                          |
