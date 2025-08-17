@@ -43,7 +43,7 @@ public class AuthController : ControllerBase
         }
     }
 
-    [HttpPost("login")]
+    [HttpPost("auth/login")]
     public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
     {
         if (!ModelState.IsValid)

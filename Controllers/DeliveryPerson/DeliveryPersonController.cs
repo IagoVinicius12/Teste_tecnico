@@ -33,7 +33,6 @@ public class DeliveryPersonController : ControllerBase
     [SwaggerResponse(201, "DeliveryPerson criado com sucesso!", typeof(DeliveryPersonResponse))]
     public async Task<IActionResult> Create_deliveryPerson([FromBody] CreateDeliveryPersonDTO deliveryPersonDTO)
     {
-        Console.WriteLine("Recebido POST em /api/deliveryPerson/create");
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -62,7 +61,7 @@ public class DeliveryPersonController : ControllerBase
             : Ok(deliveryPersons);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get/{id}")]
     [SwaggerOperation(Summary = "Obtem um deliveryPerson pelo Identificador", Description = "Retorna os detalhes de um deliveryPerson específico pelo seu Identificador.")]
     [SwaggerResponse(200, "DeliveryPerson encontrado com sucesso.", typeof(DeliveryPersonResponse))]
     public async Task<IActionResult> GetDeliveryPerson(string id)

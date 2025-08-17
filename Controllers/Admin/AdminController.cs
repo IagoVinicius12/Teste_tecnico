@@ -7,7 +7,7 @@ using Models.Admin.Requests.CreateAdminDTO;
 using Models.Admin.Responses.AdminResponse;
 
 [ApiController]
-[Route("[controller]")]
+[Route("admin")]
 public class AdminController : ControllerBase
 {
     private readonly IAdminService _adminService;
@@ -35,7 +35,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> GetAdminById(string id)
     {
         if (string.IsNullOrWhiteSpace(id))
-            return BadRequest("ID inválido");
+            return BadRequest("Identificador inválido");
         try
         {
             var admin = await _adminService.GetAdminById(id);

@@ -12,6 +12,8 @@ using Models.Rentals.Responses.RentalResponse;
 using Models.Rentals.Requests.DevolutionRentalDTO;
 using Swashbuckle.AspNetCore.Annotations;
 
+namespace Controllers.Rentals;
+
 [ApiController]
 [Route("rentals")]
 public class RentalsController : ControllerBase
@@ -51,7 +53,7 @@ public class RentalsController : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("get_rental/{id}")]
     [Authorize(Roles = "Admin,DeliveryPerson")]
     [SwaggerOperation(
         Summary = "Obtem locacao pelo identificador",

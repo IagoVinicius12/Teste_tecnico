@@ -1,14 +1,14 @@
-# Teste_Tecnico
+ï»¿# Teste_Tecnico
 
-Esse repositório foi feito para o desenvolvimento de uma aplicação que fizesse o controle de motos, locações e entregadores,
-de forma que fosse possível fazer conferências e alterações nos 3 já citados. 
-Na Api foram criados alguns endpoints que necessitam do token de autentcação para serem feitas as requisições, por isso, é necessário criar o
-usuário administrador, para ter acesso a todos os endpoints, e usuárioe entregador, que tem acesso apenas a alguns endpoints.
+Esse repositÃ³rio foi feito para o desenvolvimento de uma aplicaÃ§Ã£o que fizesse o controle de motos, locaÃ§Ãµes e entregadores,
+de forma que fosse possÃ­vel fazer conferÃªncias e alteraÃ§Ãµes nos 3 jÃ¡ citados. 
+Na Api foram criados alguns endpoints que necessitam do token de autentcaÃ§Ã£o para serem feitas as requisiÃ§Ãµes, por isso, Ã© necessÃ¡rio criar o
+usuÃ¡rio administrador, para ter acesso a todos os endpoints, e usuÃ¡rioe entregador, que tem acesso apenas a alguns endpoints.
 
 
 # Requisitos para rodar o projeto
 
-O projeto foi desenvolvido usando C# e .NET9, mas foi pensado para rodar em qualquer sistema operacional, por isso é necessário ter o docker instalado na máquina.
+O projeto foi desenvolvido usando C# e .NET9, mas foi pensado para rodar em qualquer sistema operacional, por isso Ã© necessÃ¡rio ter o docker instalado na mÃ¡quina.
 
 
 # Guia de Uso
@@ -17,23 +17,52 @@ Para rodar o projeto, basta executar o comando abaixo na raiz do projeto:
 No windows: docker compose up --build -d
 No linux: docker-compose up --build -d
 
-# Referência dos Endpoints
+# ReferÃªncia dos Endpoints
 
-Abaixo estão os endpoints disponíveis na API:
-motos/create - Cria uma nova moto, necessário passar o token de autenticação no header da requisição.
-motos/list - Lista todas as motos cadastradas, não é necessário passar o token de autenticação no header da requisição.
-motos/update/{plate} - Atualiza uma moto, necessário passar o token de autenticação no header da requisição.
-motos/delete/{id} - Deleta uma moto, necessário passar o token de autenticação no header da requisição.
+## Endpoints da API
 
-locacoes/create - Cria uma nova locação, necessário passar o token de autenticação no header da requisição.
-locacoes/get_locacao/{id} - Busca uma locação pelo id, não é necessário passar o token de autenticação no header da requisição.
-locacoes/{id}/update - Atualiza uma locação, necessário passar o token de autenticação no header da requisição.
+### MÃ³dulo de Motos
+| MÃ©todo | Rota                     | AutenticaÃ§Ã£o | DescriÃ§Ã£o                                  |
+|--------|--------------------------|--------------|--------------------------------------------|
+| POST   | `/motos/create`          | Admin        | Cadastra uma nova moto na base de dados    |
+| GET    | `/motos/get/{id}`        | PÃºblico      | Retorna os dados de uma moto por ID        |
+| GET    | `/motos/list`            | PÃºblico      | Lista todas as motos cadastradas           |
+| PUT    | `/motos/update/{plate}`  | Admin        | Atualiza os dados de uma moto pela placa   |
+| DELETE | `/motos/delete/{id}`     | Admin        | Remove uma moto do sistema por ID          |
+| GET    | `/getmotobyplate/{plate}`| Admin        | Busca uma moto especÃ­fica pela placa       |
+
+### ðŸ“¦ MÃ³dulo de LocaÃ§Ãµes
+| MÃ©todo | Rota                       | AutenticaÃ§Ã£o       | DescriÃ§Ã£o                                |
+|--------|----------------------------|--------------------|------------------------------------------|
+| POST   | `/rentals/create`          | Admin/Entregador   | Cria um novo contrato de locaÃ§Ã£o         |
+| GET    | `/rentals/get_locacao/{id}`| PÃºblico            | Consulta uma locaÃ§Ã£o por ID              |
+| PUT    | `/rentals/{id}/update`     | Admin/Entregador   | Atualiza os dados de uma locaÃ§Ã£o         |
+
+### MÃ³dulo de Entregadores
+| MÃ©todo | Rota                             | AutenticaÃ§Ã£o | DescriÃ§Ã£o                                      |
+|--------|----------------------------------|--------------|------------------------------------------------|
+| POST   | `/deliveryperson/create`         | -            | Cadastra um novo entregador                    |
+| GET    | `/deliveryperson/list`           | -            | Lista todos os entregadores cadastrados        |
+| GET    | `/deliveryperson/get/{id}`       | -            | Busca um entregador especÃ­fico por ID          |
+| POST   | `/deliveryperson/upload_cnh/{id}`| -            | Upload da CNH (aceita Base64 PNG/BMP)          |
+
+### MÃ³dulo Administrativo
+| MÃ©todo | Rota                          | AutenticaÃ§Ã£o | DescriÃ§Ã£o                          |
+|--------|-------------------------------|--------------|------------------------------------|
+| POST   | `/admin/create_admin`         | -            | Cria um novo usuÃ¡rio administrador |
+| GET    | `/admin/get_admin_by_id/{id}` | -            | Busca um administrador por ID      |
+
+### AutenticaÃ§Ã£o
+| MÃ©todo | Rota          | AutenticaÃ§Ã£o | DescriÃ§Ã£o                      |
+|--------|---------------|--------------|--------------------------------|
+| POST   | `/auth/login` | -            | Gera token JWT para acesso     |.
+
 
 # Uso
 
-Quando a aplicação estiver rodando você pode acessar a documentação da API através do Swagger, que estará disponivil no "Host_de_sua_preferencia:5050/swagger"
-Entrando na documentação, você poderá ver todos os endpoints disponíveis e testar as requisições diretamente pelo navegador.
-Lembre-se de que alguns endpoints necessitam do token de autenticação, que pode ser obtido através do endpoint de login.
-Os tokens de autenticação devem ser passados no header da requisição, por esse motivo foi incluido no Swagger o campo para inserir o token de autenticação.
+Quando a aplicaÃ§Ã£o estiver rodando vocÃª pode acessar a documentaÃ§Ã£o da API atravÃ©s do Swagger, que estarÃ¡ disponivil no "Host_de_sua_preferencia:5050/swagger"
+Entrando na documentaÃ§Ã£o, vocÃª poderÃ¡ ver todos os endpoints disponÃ­veis e testar as requisiÃ§Ãµes diretamente pelo navegador.
+Lembre-se de que alguns endpoints necessitam do token de autenticaÃ§Ã£o, que pode ser obtido atravÃ©s do endpoint de login.
+Os tokens de autenticaÃ§Ã£o devem ser passados no header da requisiÃ§Ã£o, por esse motivo foi incluido no Swagger o campo para inserir o token de autenticaÃ§Ã£o.
 
 
