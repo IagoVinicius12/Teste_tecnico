@@ -6,14 +6,19 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<RootNamespace>Teste_Tecnico</RootNamespace>
 		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="Confluent.Kafka" Version="2.11.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
 		<PackageReference Include="MongoDB.Bson" Version="3.4.2" />
 		<PackageReference Include="MongoDB.Driver" Version="3.4.2" />
 		<PackageReference Include="MongoDB.Entities" Version="24.1.1" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>

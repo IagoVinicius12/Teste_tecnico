@@ -9,4 +9,6 @@ public interface IMotoService
     Task<MotoResponse?> GetMotoByIdAsync(string id);
     Task<List<MotoResponse>> ListAllMotosAsync();
     Task<MotoResponse?> UpdateMotoPlate(UpdateMotoPlateDTO umotoDTO);
+    Task<bool> DeleteMotoAsync(string id);
+    Task<MotoResponse?> GetMotoByPlateAsync(string plate);
 }
