@@ -80,8 +80,18 @@ public class DeliveryPersonController : ControllerBase
     [HttpPost("upload_cnh/{id}")]
     [SwaggerOperation(Summary= "Faz o upload da CNH do deliveryPerson", Description = "Permite que um deliveryPerson envie sua CNH em formato Base64. Apenas arquivos PNG ou BMP sao permitidos.")]
     [SwaggerResponse(200, "CNH salva com sucesso")]
+    [Authorize(Roles = "DeliveryPerson")]
     public async Task<IActionResult> UploadCnhAsync(string id, UploadCnhDTO uploadCnhDTO)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var same_user = await _deliveryPersonService.GetByID(userId);
+        if(same_user == null)
+        {
+            throw new UnauthorizedAccessException("Usuário não autenticado");
+        }
+        else if(same_user!=id){
+            throw new UnauthorizedAccessException("Não pode atualizar os dados de outro usuário");
+        }
 
         if (string.IsNullOrEmpty(uploadCnhDTO.Cnh_Image))
             return BadRequest("Imagem não enviada.");

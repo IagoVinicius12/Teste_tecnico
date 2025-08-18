@@ -11,4 +11,5 @@ public interface IDeliveryPersonService
 	Task<DeliveryPersonResponse?> GetDeliveryPersonByIdAsync(string id);
 	Task<List<DeliveryPersonResponse>> ListAllDeliveryPersons();	
 	Task<string> UploadCnhAsync(string id, UploadCnhDTO uploadCnhDTO,string ext);
+	Task<string> GetByID(string id);
 }

@@ -41,6 +41,7 @@ public class AuthService:IAuthService
         var jwtSecret = _config["Jwt:Secret"] ??
             throw new ArgumentNullException("Jwt:Secret não configurado");
 
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_config["Jwt:Secret"]); // Chave no appsettings.json
 
@@ -54,6 +55,11 @@ public class AuthService:IAuthService
         {
             userId = admin.ID;
             userRole = admin.Role;
+            var isPasswordValid = VerifyPassword(loginDTO.Password, admin.Password);
+            if( !isPasswordValid)
+            {
+                throw new UnauthorizedAccessException("Senha inválida");
+            }
         }
         else
         {
@@ -64,6 +70,11 @@ public class AuthService:IAuthService
             {
                 userId = entregador.ID;
                 userRole = entregador.Role;
+                var isPasswordValid = VerifyPassword(loginDTO.Password, entregador.Password);
+                if (!isPasswordValid)
+                {
+                    throw new UnauthorizedAccessException("Senha inválida");
+                }
             }
             else
             {

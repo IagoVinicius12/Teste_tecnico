@@ -44,7 +44,7 @@ public class MotoController : ControllerBase
     }
 
     [HttpGet("list")]
-    [Authorize(Roles ="Admin,Entregador")]
+    [Authorize(Roles = "Admin,DeliveryPerson")]
     [SwaggerOperation(Summary = "Lista todas as motos", Description = "Retorna uma lista de todas as motos cadastradas. Acesso permitido para administradores e entregadores.")]
     [SwaggerResponse(200,"Lista de motos retornada com sucesso.", typeof(List<MotoResponse>))]
     public async Task<IActionResult> GetMotos()
@@ -54,7 +54,7 @@ public class MotoController : ControllerBase
     }
 
     [HttpGet("get/{id}")]
-    [Authorize(Roles = "Admin,Entregador")]
+    [Authorize(Roles = "Admin,DeliveryPerson")]
     [SwaggerOperation(Summary = "Obtém uma moto pelo Identificador", Description = "Retorna os detalhes de uma moto específica pelo seu ID. Acesso permitido para administradores e entregadores.")]
     [SwaggerResponse(200,"Moto encontrada com sucesso.",typeof(MotoResponse))]
     public async Task<IActionResult> GetMoto(string id)

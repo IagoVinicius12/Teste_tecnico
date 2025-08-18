@@ -6,7 +6,7 @@ using Models.DeliveryPerson.Responses.DeliveryPersonResponse;
 using Services.Auth.Interface.IAuthService;
 using Models.AdminModel;
 using MongoDB.Bson;
-using Models.DeliveryPerson.Requests.UploadCnhDTO;    
+using Models.DeliveryPerson.Requests.UploadCnhDTO;
 
 public class DeliveryPersonService : IDeliveryPersonService
 {
@@ -98,7 +98,7 @@ public class DeliveryPersonService : IDeliveryPersonService
 
     public async Task<List<DeliveryPersonResponse>> ListAllDeliveryPersons()
     {
-        //funçao pra listar os delivery_persones
+        //funçao pra listar os delivery_persons
         try
         {
             var delivery_persons = await DB.Find<DeliveryPerson>().ExecuteAsync();
@@ -149,6 +149,25 @@ public class DeliveryPersonService : IDeliveryPersonService
         catch (Exception ex)
         {
             throw new Exception($"Error uploading CNH: {ex.Message}");
+        }
+    }
+
+    public async Task<string> GetByID(string id)
+    {
+        try
+        {
+            var user = await DB.Find<DeliveryPerson>()
+                .Match(e => e.ID == id)
+                .ExecuteFirstAsync();
+            if(user == null)
+            {
+                throw new KeyNotFoundException("Delivery Person not Found");
+            }
+            return user.Identifier;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error retrieving delivery_person: {ex.Message}");
         }
     }
 }
