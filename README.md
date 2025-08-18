@@ -67,7 +67,7 @@ Os tokens de autenticação devem ser passados no header da requisição, por es
 
 # Execução:
 No windows:<br>
-docker compose up --build -d
+docker compose up --build -d<br>
 No linux:<br>
 docker-compose up --build -d
 
