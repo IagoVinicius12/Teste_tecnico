@@ -65,4 +65,10 @@ Entrando na documentação, você poderá ver todos os endpoints disponíveis e 
 Lembre-se de que alguns endpoints necessitam do token de autenticação, que pode ser obtido através do endpoint de login.
 Os tokens de autenticação devem ser passados no header da requisição, por esse motivo foi incluido no Swagger o campo para inserir o token de autenticação.
 
+# Execução:
+No windows:<br>
+docker compose up --build -d
+No linux:<br>
+docker-compose up --build -d
+
 
